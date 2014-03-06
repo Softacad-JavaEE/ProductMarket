@@ -44,7 +44,7 @@
 	<br/>
 	<input type="submit" value="Login"/>
 	
-	<a href="Register">Register</a>
+	<a href="register.jsp">Register</a>
 </form>
 <%
 	if(session.getAttribute("loginFailed") == Boolean.TRUE){
