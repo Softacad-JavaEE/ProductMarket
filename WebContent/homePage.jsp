@@ -18,7 +18,7 @@
 		</tr>
 		<tr>
 			<td>
-				
+			<jsp:include page="products.jsp"></jsp:include>					
 			</td>
 		</tr>
 	</table>
