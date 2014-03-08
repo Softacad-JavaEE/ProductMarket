@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=US-ASCII"
     pageEncoding="US-ASCII"%>
+<%@ page import="java.util.List, market.login.*" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 
@@ -10,13 +11,28 @@
 			return true;
 		}
 		String userName = request.getParameter("username");
-		
+		String password = request.getParameter("password");
+		User user = null;
+		boolean loggedin = false;
 		if(userName == null){
 			session.setAttribute("loginFailed", false);
 			return false;
 		}
-		if(userName.equals("ivan")){
+		List<User> allUsers = UserService.getInstance().getUsers();
+		for (int i=0; i< allUsers.size(); i++) {
+			user = allUsers.get(i);
+			String username = user.getUsername();			
+			if (username.equals(userName)) {
+				String pass = user.getPassword();
+				if (password.equals(pass)) {
+					loggedin = true;
+					break;
+				}
+			}
+		}		
+		if(loggedin){
 			session.setAttribute("USER", userName);
+			session.setAttribute("SELLER", user.isSeller());
 			session.setAttribute("loginFailed", false);
 			return true;
 		} else {
@@ -29,9 +45,15 @@
 	
 	if(doLogin(request, response)){
 %>
-	Hello,
+		Hello,
 <%
-	out.println(session.getAttribute("USER") + "<a href='Logout'>Log out</a>");	
+		out.println(session.getAttribute("USER") + "<a href='Logout'>Log out</a>");
+		if (session.getAttribute("SELLER")=="1") {
+			out.println("(Seller)");		
+		}
+		else {
+			out.println("(User)");		
+		}
 	} else  {
 %>
 <form method="POST">
@@ -40,11 +62,11 @@
 	<input type="text" name="username"/>
 	<br/>
 	Password: <br/>
-	<input type="text" name="password"/>
+	<input type="password" name="password"/>
 	<br/>
 	<input type="submit" value="Login"/>
 	
-	<a href="Register">Register</a>
+	<a href="register.jsp">Register</a>
 </form>
 <%
 	if(session.getAttribute("loginFailed") == Boolean.TRUE){
