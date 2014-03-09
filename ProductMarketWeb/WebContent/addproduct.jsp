@@ -7,7 +7,7 @@
 <title>New Product</title>
 </head>
 <body>
-<form method="POST">
+<form method="POST" action="AddProduct">
 
 	SKU: <br/>
 	<input type="text" name="sku"/>
