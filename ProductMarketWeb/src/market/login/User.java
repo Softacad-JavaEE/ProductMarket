@@ -1,6 +1,9 @@
 package market.login;
 
+
 public class User {
+	
+
 	public User(String name, String username, String password, String seller) {
 		super();
 		this.name = name;
@@ -36,6 +39,5 @@ public class User {
 	public void setSeller(String seller) {
 		this.seller = seller;
 	}
-
 	
 }

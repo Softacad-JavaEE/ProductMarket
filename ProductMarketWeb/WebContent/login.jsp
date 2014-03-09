@@ -47,12 +47,15 @@
 %>
 		Hello,
 <%
-		out.println(session.getAttribute("USER") + "<a href='Logout'>Log out</a>");
-		if (session.getAttribute("SELLER")=="1") {
-			out.println("(Seller)");		
+		out.println(session.getAttribute("USER"));
+		if (session.getAttribute("SELLER") == "1") {
+%>
+			(Seller) <a href='Logout'>Log out</a><br>
+<a href="myproducts.jsp"> My products</a>	
+<%
 		}
 		else {
-			out.println("(User)");		
+			out.println("(User)"+ "<a href='Logout'>Log out</a>");		
 		}
 	} else  {
 %>
