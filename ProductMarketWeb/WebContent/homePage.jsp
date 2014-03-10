@@ -7,7 +7,7 @@
 <title>Home</title>
 </head>
 <body>
-	<table>
+	<table border="1" width="100%">
 		<tr>
 			<td>
 				<jsp:include page="login.jsp"></jsp:include>
@@ -17,7 +17,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
+			<td colspan="2">
 			<jsp:include page="products.jsp"></jsp:include>					
 			</td>
 		</tr>
