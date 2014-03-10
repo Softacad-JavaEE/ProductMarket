@@ -13,7 +13,9 @@
 	Name: <br/>
 	<input type="text" name="name"/>
 	<br/>
+	I would like to be registered as a seller: &nbsp;
 	<input type="checkbox" name="seller" />
+	<br/>
 
 	<input type="submit" value="Register"/>
 	
