@@ -1,20 +1,29 @@
 <%@ page import="java.util.List, market.login.*, market.basket.*" %>
 
+<% Basket b = (Basket) session.getAttribute("Basket"); %>
+
 <table border="1">
 	<tr>
 		<td colspan="2">Basket</td>
 	</tr>
+	
+	<% for (int i=0; i < b.getNumOfProducts(); i++) {%>
 	<tr>
-		<td colspan="2">Item</td>
+		<td colspan="2"><% out.println(b.getProduct(i).getName()); %></td>
 	</tr>
+	<% } %>
 	<tr>
 		<td>Items: 
 		<%
 		
-		Basket b = (Basket) session.getAttribute("Basket");
 		out.println(b.getNumOfProducts());
 				
 		%></td>
-		<td>Total:</td>
+		<td>Total:
+		<%
+		
+		out.println(b.getTotalPrice());
+				
+		%></td>
 	</tr>
 </table>

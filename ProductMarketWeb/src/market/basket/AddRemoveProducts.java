@@ -45,6 +45,9 @@ public class AddRemoveProducts extends HttpServlet {
 		
 		if(add.equals("true")){
 			basket.addProduct(product);
+			basket.setNumOfProducts(basket.getNumOfProducts()+1);
+			basket.setTotalPrice(basket.getTotalPrice()+product.getPrice());
+			request.getSession().setAttribute("Basket", basket);
 		}
 		
 		response.sendRedirect("homePage.jsp");

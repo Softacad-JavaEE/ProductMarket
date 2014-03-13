@@ -10,7 +10,7 @@ public class Basket {
 
 	private List<Product> products = new ArrayList<Product>();
 	private int numOfProducts;
-	private float totalPrice;
+	private double totalPrice;
 	
 	public List<Product> getProducts() {
 		return products;
@@ -24,15 +24,19 @@ public class Basket {
 	public void setNumOfProducts(int numOfProducts) {
 		this.numOfProducts = numOfProducts;
 	}
-	public float getTotalPrice() {
+	public double getTotalPrice() {
 		return totalPrice;
 	}
-	public void setTotalPrice(float totalPrice) {
+	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	
 	public void addProduct(Product product){
 		this.products.add(product);
+	}
+	
+	public Product getProduct(int Index){
+		return products.get(Index);
 	}
 	
 	

@@ -44,7 +44,7 @@ public class BasketFilter implements Filter {
 
 		//Create HttpServlets and pass them the objects
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+//		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		
 		HttpSession session = httpServletRequest.getSession();
 		
