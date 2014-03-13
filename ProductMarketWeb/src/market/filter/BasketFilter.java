@@ -53,6 +53,8 @@ public class BasketFilter implements Filter {
 		//If there is no basket in the Session, create DefaultOne
 		if (basket==null){
 			basket = new Basket();
+			basket.setNumOfProducts(0);
+			basket.setTotalPrice(0);
 			session.setAttribute("Basket", basket);
 		}
 		
