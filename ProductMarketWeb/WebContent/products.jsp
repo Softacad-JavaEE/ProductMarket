@@ -12,6 +12,7 @@ for (int i=0; i< prods.size(); i++) {
 	double price = product.getPrice();
 	out.println(name);
 	out.println(price);
+	out.println("<a href=AddRemoveProducts?add=true&productNo=" + product.getSku() + "> Add </a>");
 	out.println("<br>");
 }
 

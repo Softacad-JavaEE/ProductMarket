@@ -26,4 +26,20 @@ public class ProductService {
 	public List<Product> getProducts(){
 		return products;
 	}
+	
+	public Product getProduct(int SKU){
+		
+		Product returnProduct = null;
+		
+		for(int i=0; i<products.size();i++){
+			
+			if(products.get(i).getSku() == SKU){
+				returnProduct = products.get(i);
+				break;
+			}
+			
+		}
+		
+		return returnProduct;
+	}
 }
