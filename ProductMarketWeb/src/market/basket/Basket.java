@@ -39,5 +39,9 @@ public class Basket {
 		return products.get(Index);
 	}
 	
+	public void removeProduct(int Index){
+		products.remove(Index);
+	}
+	
 	
 }

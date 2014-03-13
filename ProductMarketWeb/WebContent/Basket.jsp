@@ -9,7 +9,7 @@
 	
 	<% for (int i=0; i < b.getNumOfProducts(); i++) {%>
 	<tr>
-		<td colspan="2"><% out.println(b.getProduct(i).getName()); %></td>
+		<td colspan="2"><% out.println(b.getProduct(i).getName() + " <a href=AddRemoveProducts?add=false&productNo=" + i + "> Remove</a>"); %></td>
 	</tr>
 	<% } %>
 	<tr>
