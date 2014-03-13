@@ -55,8 +55,8 @@ public class LoginFilter implements Filter {
 		
 		session = httpServletRequest.getSession();
 		
-		String userName = request.getParameter("username");
-		String password = request.getParameter("password");
+		userName = request.getParameter("username");
+		password = request.getParameter("password");
 		
 		//First, check whether the Session has object USER
 		boolean isUserLogged = checkLogged(httpServletRequest,httpServletResponse);
