@@ -4,46 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 
-<%!
-	boolean doLogin(HttpServletRequest request, HttpServletResponse response){
-		HttpSession session = request.getSession();
-		if(session.getAttribute("USER") != null){
-			return true;
-		}
-		String userName = request.getParameter("username");
-		String password = request.getParameter("password");
-		User user = null;
-		boolean loggedin = false;
-		if(userName == null){
-			session.setAttribute("loginFailed", false);
-			return false;
-		}
-		List<User> allUsers = UserService.getInstance().getUsers();
-		for (int i=0; i< allUsers.size(); i++) {
-			user = allUsers.get(i);
-			String username = user.getUsername();			
-			if (username.equals(userName)) {
-				String pass = user.getPassword();
-				if (password.equals(pass)) {
-					loggedin = true;
-					break;
-				}
-			}
-		}		
-		if(loggedin){
-			session.setAttribute("USER", userName);
-			session.setAttribute("SELLER", user.isSeller());
-			session.setAttribute("loginFailed", false);
-			return true;
-		} else {
-			session.setAttribute("loginFailed", true);
-			return false;
-		}
-}
-%>
 <%
 	
-	if(doLogin(request, response)){
+	if(session.getAttribute("USER") != null){
 %>
 		Hello,
 <%
