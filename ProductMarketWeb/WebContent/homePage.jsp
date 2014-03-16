@@ -13,7 +13,7 @@
 				<jsp:include page="login.jsp"></jsp:include>
 			</td>
 			<td>
-				<jsp:include page="Basket.jsp"></jsp:include>
+				<jsp:include page="basket.jsp"></jsp:include>
 			</td>
 		</tr>
 		<tr>
