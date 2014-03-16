@@ -2,12 +2,16 @@ package market.login;
 
 import java.io.IOException;
 
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import market.models.Product;
+import market.models.User;
 
 /**
  * Servlet implementation class AddProduct
@@ -40,11 +44,12 @@ public class AddProduct extends HttpServlet {
 		Integer sku = Integer.parseInt(request.getParameter("sku"));
 		Integer qty = Integer.parseInt(request.getParameter("qty"));
 		Double price = Double.parseDouble(request.getParameter("price"));
+		User user = (User) session.getAttribute("USER");
 		Product newProduct = new Product(sku,
 				request.getParameter("name"),
 				request.getParameter("desc"),
 				price,
-				session.getAttribute("USER").toString(),
+				user,
 				qty);
 		ProductService.getInstance().addProduct(newProduct);
 		response.sendRedirect("myproducts.jsp");

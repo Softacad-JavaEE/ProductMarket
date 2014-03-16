@@ -1,8 +1,17 @@
-package market.login;
+package market.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
 public class User {
-	
+
+	@Id
+	int id;
+	private String name;
+	private String username;
+	private String password;
+	private String seller;
 
 	public User(String name, String username, String password, String seller) {
 		super();
@@ -11,10 +20,6 @@ public class User {
 		this.password = password;
 		this.seller = seller;
 	}
-	private String name;
-	private String username;
-	private String password;
-	private String seller;
 	public String getName() {
 		return name;
 	}

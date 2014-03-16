@@ -1,4 +1,4 @@
-<%@ page import="java.util.List, market.login.*, market.basket.*" %>
+<%@ page import="java.util.List, market.login.*, market.basket.*, market.models.Basket" %>
 
 <% Basket b = (Basket) session.getAttribute("Basket"); %>
 

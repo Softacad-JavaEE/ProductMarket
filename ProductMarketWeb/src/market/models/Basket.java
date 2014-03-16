@@ -1,11 +1,11 @@
-package market.basket;
+package market.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import market.login.Product;
+import javax.persistence.Entity;
 
-
+@Entity
 public class Basket {
 
 	private List<Product> products = new ArrayList<Product>();

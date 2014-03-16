@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import market.login.Product;
 import market.login.ProductService;
+import market.models.Basket;
+import market.models.Product;
 
 /**
  * Servlet implementation class AddRemoveProducts

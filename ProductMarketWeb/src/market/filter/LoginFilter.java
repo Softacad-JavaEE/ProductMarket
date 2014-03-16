@@ -3,6 +3,11 @@ package market.filter;
 import java.io.IOException;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -13,9 +18,10 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.transaction.UserTransaction;
 
-import market.login.User;
 import market.login.UserService;
+import market.models.User;
 
 /**
  * Servlet Filter implementation class LoginFilter
@@ -27,6 +33,12 @@ public class LoginFilter implements Filter {
 	String userName;
 	String password;
 	User user = null;
+
+	@PersistenceUnit(unitName="ProductMarketWeb")
+	EntityManagerFactory emf;
+	
+	EntityManager em;
+	Query userQuery;
 	
     /**
      * Default constructor. 
@@ -95,7 +107,13 @@ public class LoginFilter implements Filter {
 		}		
 		
 		if(loggedin){
-			session.setAttribute("USER", userName);
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			userQuery.setParameter("username", userName);
+			User userObj = em.find(User.class, userQuery);
+			tx.commit();
+			
+			session.setAttribute("USER", userObj);
 			session.setAttribute("SELLER", user.isSeller());
 			session.setAttribute("loginFailed", false);
 			return true;
@@ -122,7 +140,8 @@ public class LoginFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
+		em = emf.createEntityManager();
+		userQuery = em.createNamedQuery("Select username from User where username = :username");
 	}
 
 }

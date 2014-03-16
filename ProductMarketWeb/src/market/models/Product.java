@@ -1,7 +1,24 @@
-package market.login;
+package market.models;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.Pattern;
+
+@Entity
 public class Product {
-	public Product (Integer sku, String name, String description, double price, String user, Integer qty) {
+	
+	@Id
+	Integer sku;
+	@ManyToOne(optional=false)
+	User user;
+	String name;
+	String description;
+	double price;
+	int quantity;
+	
+	
+	public Product (Integer sku, String name, String description, double price, User user, Integer qty) {
 		super();
 		this.sku = sku;
 		this.name = name;
@@ -17,12 +34,6 @@ public class Product {
 		this.description = description;
 		this.price = price;
 	}
-	Integer sku;
-	String user;
-	String name;
-	String description;
-	double price;
-	Integer quantity;
 	public Integer getQuantity() {
 		return quantity;
 	}
@@ -53,10 +64,10 @@ public class Product {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public String getUser() {
+	public User getUser() {
 		return user;
 	}
-	public void setUser(String user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
