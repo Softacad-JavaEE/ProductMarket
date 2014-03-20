@@ -2,6 +2,7 @@ package market.basket;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import market.login.ProductService;
-import market.models.Basket;
 import market.models.Product;
 
 /**
@@ -18,6 +18,8 @@ import market.models.Product;
 @WebServlet("/AddRemoveProducts")
 public class AddRemoveProducts extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	@EJB Basket basket;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -35,21 +37,17 @@ public class AddRemoveProducts extends HttpServlet {
 		
 		String add = "true";
 		int productSku = 0;
-		Basket basket = null;
 		Product product;
 		
 		add = request.getParameter("add");
 		productSku = Integer.parseInt(request.getParameter("productNo"));
-		basket = (Basket) request.getSession().getAttribute("Basket");
-		
 		product = ProductService.getInstance().getProduct(productSku);
 		
 		if(add.equals("true")){
 			basket.addProduct(product);
 			basket.setNumOfProducts(basket.getNumOfProducts()+1);
 			basket.setTotalPrice(basket.getTotalPrice()+product.getPrice());
-			request.getSession().setAttribute("Basket", basket);
-		}else{
+		} else{
 			basket.setNumOfProducts(basket.getNumOfProducts()-1);
 			basket.setTotalPrice(basket.getTotalPrice()-basket.getProduct(productSku).getPrice());
 			basket.removeProduct(productSku);

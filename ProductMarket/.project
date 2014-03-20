@@ -5,6 +5,7 @@
 	<projects>
 		<project>ProductMarketWeb</project>
 		<project>ProductMarketEJB</project>
+		<project>ProductMarketJPA</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

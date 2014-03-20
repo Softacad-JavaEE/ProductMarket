@@ -17,9 +17,10 @@ public class Product {
 	double price;
 	int quantity;
 	
+	public Product() { }
 	
 	public Product (Integer sku, String name, String description, double price, User user, Integer qty) {
-		super();
+		this();
 		this.sku = sku;
 		this.name = name;
 		this.description = description;

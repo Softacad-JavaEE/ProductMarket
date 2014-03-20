@@ -13,6 +13,8 @@ public class User {
 	private String password;
 	private String seller;
 
+	public User() {}
+	
 	public User(String name, String username, String password, String seller) {
 		super();
 		this.name = name;

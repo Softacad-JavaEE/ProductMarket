@@ -17,8 +17,11 @@ public class Order {
 	@ManyToOne(optional=false)
 	User orderedBy;
 	Date orderedOn;
+	
+	public Order() { }
+	
 	public Order(int id, User orderedBy, Date orderedOn) {
-		super();
+		this();
 		this.id = id;
 		this.orderedBy = orderedBy;
 		this.orderedOn = orderedOn;

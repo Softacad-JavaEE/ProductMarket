@@ -3,6 +3,7 @@ package market.filter;
 import java.io.IOException;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -22,6 +23,7 @@ import javax.transaction.UserTransaction;
 
 import market.login.UserService;
 import market.models.User;
+import market.userQueries.UserProfile;
 
 /**
  * Servlet Filter implementation class LoginFilter
@@ -34,11 +36,8 @@ public class LoginFilter implements Filter {
 	String password;
 	User user = null;
 
-	@PersistenceUnit(unitName="ProductMarketWeb")
-	EntityManagerFactory emf;
-	
-	EntityManager em;
-	Query userQuery;
+	@EJB
+	UserProfile userProfile;
 	
     /**
      * Default constructor. 
@@ -107,12 +106,7 @@ public class LoginFilter implements Filter {
 		}		
 		
 		if(loggedin){
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
-			userQuery.setParameter("username", userName);
-			User userObj = em.find(User.class, userQuery);
-			tx.commit();
-			
+			User userObj = userProfile.getUser(userName);
 			session.setAttribute("USER", userObj);
 			session.setAttribute("SELLER", user.isSeller());
 			session.setAttribute("loginFailed", false);
@@ -136,12 +130,9 @@ public class LoginFilter implements Filter {
 		
 	}
 
-	/**
-	 * @see Filter#init(FilterConfig)
-	 */
-	public void init(FilterConfig fConfig) throws ServletException {
-		em = emf.createEntityManager();
-		userQuery = em.createNamedQuery("Select username from User where username = :username");
+	@Override
+	public void init(FilterConfig arg0) throws ServletException {
+		// TODO Auto-generated method stub
 	}
 
 }
