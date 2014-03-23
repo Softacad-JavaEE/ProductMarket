@@ -1,8 +1,17 @@
 <%@page import="javax.ejb.EJB"%>
-<%@ page import="java.util.List, market.login.*, market.basket.*, market.basket.Basket" %>
+<%@ page import="javax.naming.*, java.util.List, market.login.*, market.basket.*, market.basket.Basket" %>
 
+<% 
 
-<%! @EJB Basket b;
+	Basket b = null;
+	try {
+		Context context = new InitialContext();
+		b = (Basket) context.lookup("java:global/ProductMarket/ProductMarketEJB/Basket");
+	}
+	catch(Exception e) {
+		// exception code here
+		out.println(e);
+	}
 	int numProducts = b.getNumOfProducts();
 %>
 
