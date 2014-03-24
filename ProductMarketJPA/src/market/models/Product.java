@@ -3,7 +3,6 @@ package market.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.Pattern;
 
 @Entity
 public class Product {

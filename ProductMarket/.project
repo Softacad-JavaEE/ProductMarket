@@ -3,9 +3,9 @@
 	<name>ProductMarket</name>
 	<comment></comment>
 	<projects>
-		<project>ProductMarketWeb</project>
 		<project>ProductMarketEJB</project>
 		<project>ProductMarketJPA</project>
+		<project>ProductMarketWeb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
