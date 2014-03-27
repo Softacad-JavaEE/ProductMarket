@@ -9,11 +9,11 @@
 </head>
 <body>
 <%
-ProductService ps = ProductService.getInstance();
+	ProductService ps = ProductService.getInstance();
 List<Product> prods = ps.getProducts();
 for (int i=0; i< prods.size(); i++) {
 	Product product = prods.get(i);
-	if (session.getAttribute("USER").equals(product.getUser())) {
+	if (session.getAttribute("USER").equals(product.getSeller())) {
 	String name = product.getName();
 	double price = product.getPrice();
 	out.println(name);

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
+import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.UserTransaction;
 
+import market.basket.Basket;
 import market.login.UserService;
 import market.models.User;
 import market.userQueries.UserProfile;
@@ -28,7 +32,7 @@ import market.userQueries.UserProfile;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter("/LoginFilter")
+@WebFilter("/*")
 public class LoginFilter implements Filter {
 
 	HttpSession session;
@@ -36,8 +40,11 @@ public class LoginFilter implements Filter {
 	String password;
 	User user = null;
 
-	@EJB
+	@SessionScoped
 	UserProfile userProfile;
+	
+	@SessionScoped
+	Basket basket;
 	
     /**
      * Default constructor. 
@@ -110,6 +117,7 @@ public class LoginFilter implements Filter {
 			session.setAttribute("USER", userObj);
 			session.setAttribute("SELLER", user.isSeller());
 			session.setAttribute("loginFailed", false);
+			basket.setBuyer(userObj);
 			return true;
 		} else {
 			session.setAttribute("loginFailed", true);

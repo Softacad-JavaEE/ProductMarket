@@ -1,11 +1,13 @@
 package market.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -17,7 +19,10 @@ public class Order {
 	@ManyToOne(optional=false)
 	User orderedBy;
 	Date orderedOn;
-	
+	@ManyToOne(optional=false)
+	@JoinColumn(name="order_item_id")
+	List<OrderItem> items;
+
 	public Order() { }
 	
 	public Order(int id, User orderedBy, Date orderedOn) {
@@ -43,6 +48,14 @@ public class Order {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public List<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(List<OrderItem> items) {
+		this.items = items;
 	}
 	
 }

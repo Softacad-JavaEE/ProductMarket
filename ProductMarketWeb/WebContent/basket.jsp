@@ -4,6 +4,7 @@
 <% 
 
 	Basket b = null;
+	
 	try {
 		Context context = new InitialContext();
 		b = (Basket) context.lookup("java:global/ProductMarket/ProductMarketEJB/Basket");

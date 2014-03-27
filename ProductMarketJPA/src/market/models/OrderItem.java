@@ -16,10 +16,10 @@ public class OrderItem implements Serializable {
 	   
 	@Id
 	private int id;
-	@ManyToOne(optional=false)
+	@OneToOne(optional=false)
 	private Order order;
 	private int quantity;
-	@ManyToOne(optional=false)
+	@OneToOne(optional=false)
 	private Product product;
 	private static final long serialVersionUID = 1L;
 

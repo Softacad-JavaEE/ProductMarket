@@ -3,6 +3,10 @@ package market.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.ws.rs.OPTIONS;
+
+import com.sun.istack.internal.NotNull;
 
 @Entity
 public class Product {
@@ -10,11 +14,13 @@ public class Product {
 	@Id
 	Integer sku;
 	@ManyToOne(optional=false)
-	User user;
+	User seller;
 	String name;
 	String description;
 	double price;
 	int quantity;
+	@OneToOne(optional=true)
+	OrderItem orderItem;
 	
 	public Product() { }
 	
@@ -24,7 +30,7 @@ public class Product {
 		this.name = name;
 		this.description = description;
 		this.price = price;		
-		this.user = user;
+		this.seller = user;
 		this.quantity = qty;
 	}
 	public Product(Integer sku, String name, String description, double price) {
@@ -64,11 +70,24 @@ public class Product {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public User getUser() {
-		return user;
+	public User getSeller() {
+		return seller;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setSeller(User user) {
+		this.seller = user;
 	}
 
+	public OrderItem getOrderItem() {
+		return orderItem;
+	}
+
+	public void setOrderItem(OrderItem orderItem) {
+		this.orderItem = orderItem;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	
 }
