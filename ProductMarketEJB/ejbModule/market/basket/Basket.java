@@ -97,7 +97,9 @@ public class Basket {
 	}
 
 	public void buy() throws BasketBuyException {
-		initializeSeller();
+		// We implemented this with MDB 
+		//initializeSeller(orderItems.size());
+		
 		// foreach product send message
 		Order order = new Order();
 		order.setOrderedBy(buyer);
@@ -115,7 +117,7 @@ public class Basket {
 //		ctx.createProducer().send(sellersQueue, map);
 	}
 
-	private void initializeSeller() {
+	private void initializeSeller(int productsCount) {
 		
 		Seller sellerBean;
 		try {
@@ -125,7 +127,7 @@ public class Basket {
 		}
 		
 		try {
-			sellerBean.sell();
+			sellerBean.sell(productsCount);
 		} catch (JMSException e) {
 			throw new BasketBuyException("Some shit happened", e);
 		}

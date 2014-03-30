@@ -33,15 +33,29 @@ public class Seller {
 	@PersistenceUnit(name = "ProductMarketJPA")
 	EntityManagerFactory emf;
 	
-	public void sell() throws JMSException {
+	public void sell(int productsCount) throws JMSException {
 		
 		QueueConnection queueConn = connFactory.createQueueConnection();
 		Session session = queueConn.createSession();
-		
+
+		// cycle
+		for (int i = 0; i < productsCount; i++) {
+			// is this message for me
+			readMessage(session);
+		}
+
+		// close connection and session
+	}
+
+	private void readMessage(Session session) throws JMSException {
 		MessageConsumer consumer = 
 				session.createConsumer(sellersQueue);
-
+		
 		TextMessage message = (TextMessage) consumer.receive();
+		
+		///sender 
+		
+		
 		int productSKU = message.getIntProperty("productSKU");
 //		String buyer = message.getStringProperty("buyer");
 //		String seller = message.getStringProperty("seller");
@@ -54,6 +68,7 @@ public class Seller {
 		product.setQuantity(product.getQuantity() - product.getOrderItem().getQuantity());
 		
 		entityManager.persist(product);
+		
 		entityManager.getTransaction().commit();
 	}
 
