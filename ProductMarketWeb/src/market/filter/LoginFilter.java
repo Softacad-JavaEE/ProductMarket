@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -40,10 +41,10 @@ public class LoginFilter implements Filter {
 	String password;
 	User user = null;
 
-	@SessionScoped
+	@Inject
 	UserProfile userProfile;
 	
-	@SessionScoped
+	@Inject
 	Basket basket;
 	
     /**

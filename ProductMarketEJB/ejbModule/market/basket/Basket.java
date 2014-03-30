@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSException;
@@ -14,6 +13,8 @@ import javax.jms.Queue;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.Session;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
@@ -22,7 +23,7 @@ import market.models.Order;
 import market.models.OrderItem;
 import market.models.Product;
 import market.models.User;
-import market.userQueries.UserProfile;
+import market.seller.Seller;
 
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
@@ -34,11 +35,11 @@ public class Basket {
 
 	@Resource(lookup="java:queue/sellers")
 	private Queue sellersQueue;
-
+	
 //	@Inject
 //	JMSContext ctx;
 
-	@JMSConnectionFactory("queue/sellers")
+	@JMSConnectionFactory("queueFactory/sellers")
 	private QueueConnectionFactory connFactory;
 
 	@PersistenceUnit(name = "ProductMarketJPA")
@@ -96,6 +97,7 @@ public class Basket {
 	}
 
 	public void buy() throws BasketBuyException {
+		initializeSeller();
 		// foreach product send message
 		Order order = new Order();
 		order.setOrderedBy(buyer);
@@ -113,6 +115,22 @@ public class Basket {
 //		ctx.createProducer().send(sellersQueue, map);
 	}
 
+	private void initializeSeller() {
+		
+		Seller sellerBean;
+		try {
+			sellerBean = (Seller) new InitialContext().lookup("java:global/ProductMarket/ProductMarketEJB/Seller");
+		} catch (NamingException ne) {
+			throw new BasketBuyException("Unable to resolve name.", ne);
+		}
+		
+		try {
+			sellerBean.sell();
+		} catch (JMSException e) {
+			throw new BasketBuyException("Some shit happened", e);
+		}
+	}
+	
 	private void sendMessage(Product p) {
 		Message m = null;
 

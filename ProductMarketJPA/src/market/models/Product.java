@@ -4,9 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.ws.rs.OPTIONS;
-
-import com.sun.istack.internal.NotNull;
 
 @Entity
 public class Product {

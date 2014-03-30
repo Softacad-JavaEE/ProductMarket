@@ -11,6 +11,7 @@ public class User {
 	private String name;
 	private String username;
 	private String password;
+	// TODO
 	private String seller;
 
 	public User() {}
