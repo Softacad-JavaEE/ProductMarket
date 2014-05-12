@@ -30,7 +30,7 @@ public class Seller {
 	@JMSConnectionFactory("queueFactory/sellers")
 	private QueueConnectionFactory connFactory;
 	
-	@PersistenceUnit(name = "ProductMarketJPA")
+	@PersistenceUnit(name = "ProductMarketJPA") // with this injection we should care about EM lifecycle and commit transactions
 	EntityManagerFactory emf;
 	
 	public void sell(int productsCount) throws JMSException {
@@ -38,7 +38,6 @@ public class Seller {
 		QueueConnection queueConn = connFactory.createQueueConnection();
 		Session session = queueConn.createSession();
 
-		// cycle
 		for (int i = 0; i < productsCount; i++) {
 			// is this message for me
 			readMessage(session);
@@ -60,6 +59,7 @@ public class Seller {
 //		String buyer = message.getStringProperty("buyer");
 //		String seller = message.getStringProperty("seller");
 		
+		// manually begin and end transactions for fine-grained control
 		EntityManager entityManager = emf.createEntityManager();
 		
 		entityManager.getTransaction().begin();

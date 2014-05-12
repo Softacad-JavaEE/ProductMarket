@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.jms.JMSConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -16,8 +18,7 @@ import javax.jms.Session;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
+import javax.persistence.PersistenceContext;
 
 import market.models.Order;
 import market.models.OrderItem;
@@ -28,28 +29,35 @@ import market.seller.Seller;
 import org.jboss.logging.Logger;
 import org.jboss.logging.Logger.Level;
 
-@Stateful
+@Stateful // because the basket can be persisted between sessions
 public class Basket {
 
 	private Logger logger = Logger.getLogger(Basket.class);
 
+	// inject the sellers queue
 	@Resource(lookup="java:queue/sellers")
 	private Queue sellersQueue;
 	
 //	@Inject
 //	JMSContext ctx;
 
+	// inject the sellers queue connection factory
 	@JMSConnectionFactory("queueFactory/sellers")
 	private QueueConnectionFactory connFactory;
 
-	@PersistenceUnit(name = "ProductMarketJPA")
-	EntityManagerFactory emf;
+//	@PersistenceUnit(name = "ProductMarketJPA")
+//	EntityManagerFactory emf;
+	
+	// inject EM
+	@PersistenceContext
+	EntityManager em;
 	
 	private List<Product> products = new ArrayList<Product>();
 	private List<OrderItem> orderItems = new ArrayList<>();
 	private int numOfProducts;
 	private double totalPrice;
 	
+	// user who adds to this basket and wil buy it
 	private User buyer;
 	
 	public void setBuyer(User buyer) {
@@ -74,11 +82,14 @@ public class Basket {
 		this.totalPrice = totalPrice;
 	}
 	
+	// in a new transaction add a product in this basket
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void addProduct(Product product){
 		OrderItem orderItem = new OrderItem();
 		orderItem.setProduct(product);
 		orderItem.setQuantity(1);
 		orderItems.add(orderItem);
+		em.persist(orderItem);
 //		this.products.add(product);
 	}
 	
@@ -96,6 +107,8 @@ public class Basket {
 		}
 	}
 
+	// definitely do the buy method in a new transaction (because it is short-lived and can be committed fast)
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void buy() throws BasketBuyException {
 		// We implemented this with MDB 
 		//initializeSeller(orderItems.size());
@@ -109,10 +122,10 @@ public class Basket {
 			sendMessage(item.getProduct());
 		}
 		
-		EntityManager em = emf.createEntityManager();
-		em.getTransaction().begin();
+//		EntityManager em = emf.createEntityManager();
+//		em.getTransaction().begin();
 		em.persist(order);
-		em.getTransaction().commit();
+//		em.getTransaction().commit();
 		//TODO Use better transaction logging
 //		ctx.createProducer().send(sellersQueue, map);
 	}
@@ -142,6 +155,7 @@ public class Basket {
 
 		try {
 			m = session.createTextMessage(p.getName());
+			// send the message with buyer and seller so that we can filter messages with selector(eventually)
 			m.setIntProperty("productSKU", p.getSku());
 			m.setStringProperty("buyer", p.getOrderItem().getOrder().getOrderedBy().getUsername());
 			m.setStringProperty("seller", p.getSeller().getUsername());

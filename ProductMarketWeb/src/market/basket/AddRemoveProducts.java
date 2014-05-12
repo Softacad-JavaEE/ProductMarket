@@ -18,31 +18,22 @@ import market.models.Product;
 @WebServlet("/AddRemoveProducts")
 public class AddRemoveProducts extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
+	// inject basket of the current user
 	@EJB Basket basket;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddRemoveProducts() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		String add = "true";
 		int productSku = 0;
 		Product product;
-		
+
 		add = request.getParameter("add");
 		productSku = Integer.parseInt(request.getParameter("productNo"));
 		product = ProductService.getInstance().getProduct(productSku);
-		
+
 		if(add.equals("true")){
 			basket.addProduct(product);
 			basket.setNumOfProducts(basket.getNumOfProducts()+1);
@@ -52,15 +43,8 @@ public class AddRemoveProducts extends HttpServlet {
 			basket.setTotalPrice(basket.getTotalPrice()-basket.getProduct(productSku).getPrice());
 			basket.removeProduct(productSku);
 		}
-		
-		response.sendRedirect("homePage.jsp");
-	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		response.sendRedirect("homePage.jsp");
 	}
 
 }

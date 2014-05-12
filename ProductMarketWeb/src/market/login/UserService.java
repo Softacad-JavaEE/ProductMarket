@@ -5,6 +5,7 @@ import java.util.List;
 
 import market.models.User;
 
+// TODO should be reimplemented to affect entity beans
 public class UserService {
 	private List<User> users = new ArrayList<User>();
 	private static UserService instance = null;

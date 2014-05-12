@@ -7,6 +7,7 @@
 	
 	try {
 		Context context = new InitialContext();
+		// with this lookup string we can get Basket ejb instance so that we can add/remove and buy it
 		b = (Basket) context.lookup("java:global/ProductMarket/ProductMarketEJB/Basket");
 	}
 	catch(Exception e) {

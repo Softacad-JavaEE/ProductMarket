@@ -31,7 +31,7 @@ import market.models.User;
 import market.userQueries.UserProfile;
 
 /**
- * Servlet Filter implementation class LoginFilter
+ * Filter used to do the user login and also initialize his basket
  */
 @WebFilter("/*")
 public class LoginFilter implements Filter {
@@ -46,28 +46,17 @@ public class LoginFilter implements Filter {
 	
 	@Inject
 	Basket basket;
-	
-    /**
-     * Default constructor. 
-     */
-    public LoginFilter() {
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
-		// place your code here
-		
 		//Create HttpServlets and pass them the objects
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
@@ -118,30 +107,25 @@ public class LoginFilter implements Filter {
 			session.setAttribute("USER", userObj);
 			session.setAttribute("SELLER", user.isSeller());
 			session.setAttribute("loginFailed", false);
+			// init the user basket
 			basket.setBuyer(userObj);
 			return true;
 		} else {
 			session.setAttribute("loginFailed", true);
 			return false;
 		}
-		
 	}
 
 	private boolean checkLogged(ServletRequest request, ServletResponse response) {
-		// TODO Auto-generated method stub
-		
-		
-			if(session.getAttribute("USER") != null){
-				return true;
-			}
-		
+		if(session.getAttribute("USER") != null){
+			return true;
+		}
+
 		return false;
-		
 	}
 
 	@Override
 	public void init(FilterConfig arg0) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

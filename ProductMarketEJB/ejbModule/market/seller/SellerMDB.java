@@ -4,10 +4,7 @@ import javax.ejb.EJBException;
 import javax.ejb.MessageDriven;
 import javax.jms.JMSException;
 import javax.jms.Message;
-import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
-import javax.jms.QueueConnection;
-import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,14 +12,15 @@ import javax.persistence.PersistenceUnit;
 
 import market.models.Product;
 
-@MessageDriven(mappedName = "queue/sellers")
+@MessageDriven(mappedName = "queue/sellers") // MDB which is listening on Sellers queue
 public class SellerMDB implements MessageListener {
 
 	@PersistenceUnit(name = "ProductMarketJPA")
 	EntityManagerFactory emf;
 	
 	@Override
-	public void onMessage(Message msg) {
+	public void onMessage(Message msg) { // invoked for each messages in the queue
+
 		
 		TextMessage message = (TextMessage) msg;
 		int productSKU;
@@ -39,6 +37,9 @@ public class SellerMDB implements MessageListener {
 		entityManager.getTransaction().begin();
 		
 		Product product = entityManager.find(Product.class, productSKU);
+		// update the quantity so that the item is bought and so to say sent for
+		// delivery and the quantity which the seller has is decreased with the
+		// items bought
 		product.setQuantity(product.getQuantity() - product.getOrderItem().getQuantity());
 		
 		entityManager.persist(product);
